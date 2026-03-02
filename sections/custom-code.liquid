@@ -1,7 +1,12 @@
 <div class="codeStyle">
-<p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur cumque enim fugit facilis tenetur nobis sapiente sit debitis porro, maiores consequuntur ipsa aperiam officia, eius neque repudiandae deleniti, voluptas dolorum.
-</p>
+
+    <h2>{{ section.settings.title }}</h2>
+    <h3>{{ section.settings.subtitle }}</h3>
+    <div>
+        {{ section.settings.content }}
+    </div>
+
+
 </div>
 
 {%  style  %} 
@@ -16,9 +21,31 @@
 
 {
     "name": "Custom Code",
+    "disabled_on": {
+        "groups": ["header", "footer"]
+    },
     "tag": "section",
-    "class": "Custm Code",
-    "settings": [],
+    "class": "custom_code",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Hello this title"
+        },
+        {
+            "type": "richtext",
+            "id": "subtitle",
+            "label": "Sub Title",
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint nesciunt omnis incidunt quidem modi veniam accusamus consequuntur hic quae suscipit. Repudiandae atque consequatur voluptates!</p>"
+        }
+    ],
+    "blocks": [],
     "presets": [
         {
             "name": "code"
