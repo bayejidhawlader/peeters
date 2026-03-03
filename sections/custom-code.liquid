@@ -1,10 +1,26 @@
 <div class="codeStyle">
 
-    <h2>{{ section.settings.title }}</h2>
-    <h3>{{ section.settings.subtitle }}</h3>
-    <div>
-        {{ section.settings.content }}
-    </div>
+    {%  liquid 
+        assign title = section.settings.title  | upcase |  append: ' 33' 
+        assign sub = section  .settings.subtitle
+        assign content = section.settings.content
+
+        capture allcontent
+        echo '<h2>' | append: title | append: '</h2>'
+        echo '<h3>' | append: sub | append: '</h3>'
+        echo '<div>' | append: content | append: '</div>'
+        endcapture
+    %}
+
+<ul>
+        {% for block in section.blocks %}
+            <li>{{block.settings.title }} ({{ forloop.index }})</li>
+        {% endfor %}
+</ul>
+
+
+ 
+    {{ allcontent }}
 
 
 </div>
@@ -43,6 +59,16 @@
             "id": "content",
             "label": "Content",
             "default": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint nesciunt omnis incidunt quidem modi veniam accusamus consequuntur hic quae suscipit. Repudiandae atque consequatur voluptates!</p>"
+        },
+        {
+            "type": "html",
+            "id": "html",
+            "label": "HTML Code"
+        },
+        {
+            "type": "liquid",
+            "id": "liquid",
+            "label": "Liquid"
         }
     ],
     "blocks": [],
@@ -50,7 +76,7 @@
         {
             "name": "code"
         }
-    ],
+    ]
 }
 
 {% endschema %}
