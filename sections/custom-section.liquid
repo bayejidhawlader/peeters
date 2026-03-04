@@ -1,0 +1,92 @@
+<div class="container">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus adipisci rem fuga aut ullam tempora exercitationem architecto deserunt dolore nesciunt.
+</div>
+
+
+{% style %}
+
+    .container{
+        max-width: {{section.settings.container}};
+        margin: 0 auto;
+        padding: {{section.settings.padding_top}} px 20px  {{section.settings.padding_bottom}} px;
+}
+
+
+{% endstyle %}
+
+{%  schema  %}  
+{
+    "name": "Section",
+    "class": "custom_section",
+    "tag": "section",
+    "disabled_on": {
+        "groups": ["header", "footer"]
+    },
+    "settings": [
+        {
+            "type": "select",
+            "id": "container",
+            "default": "1200px",
+            "label": "Layout",
+            "options": [
+                {
+                    "label": "Full Width",
+                    "value": "100%"
+                },
+                {
+                    "label": "Container",
+                    "value": "1200px"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "label": "Padding Top",
+            "min": 0,
+            "max": 200,
+            "step": 5,
+            "default": 50,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Padding Bottom",
+            "min": 0,
+            "max": 200,
+            "step": 5,
+            "default": 50,
+            "unit": "px"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "title",
+            "default": "This is Title"
+        },
+        {
+            "type": "select",
+            "id": "title_size",
+            "label": "Title Size",
+            "options": [
+                {"label": "Large", "value": "50px"},
+                {"label": "Medium", "value": "40px"},
+                {"label": "Small", "value": "30px"},
+                {"label": "Extra Small", "value": "24px"},
+            ],
+            "default": "40px"
+        },
+        {
+            "type": "color",
+            "default": "#000",
+            "id": "title_color",
+            "label": "Title Color"
+        }
+    ],
+    "presets": [
+        {"name": "Section"}
+    ]
+}
+
+{% endschema %}
