@@ -1,82 +1,92 @@
-{%  liquid 
+
+{% liquid 
     assign title = section.settings.title
     assign title_size = section.settings.title_size
     assign title_color = section.settings.title_color
- %}
+     
+%}
 
- <div class="container">
+<div class="container">
+    
     <h2>{{ title }}</h2>
 
-
-
+ 
+{% if section.blocks.size > 0 %}
 <ul>
+
     {% for block in section.blocks %}
         <li>
-            <img src="{{ block.settings.icon |  img_url: '500x' }}" width="500px" height="auto" alt="{{ block.settings.icon.alt }}">
+            <img src="{{ block.settings.icon | img_url: '500x' }}" width="100%" height="auto" alt="{{ block.settings.icon.alt }}">
             <p>{{ block.settings.title }}</p>
         </li>
     {% endfor %}
+
 </ul>
+{% endif %}
 
- </div>
-
-<div class="container">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus adipisci rem fuga aut ullam tempora exercitationem architecto deserunt dolore nesciunt.
 </div>
 
-{% style %}
 
-#shopify-section-{{ section.id }} .container {
-    {%  if section.settings.select_bg == 'color' %}
-        background: {{ section.settings.section_bg }};
-    {%  elsif section.settings.section_bg == 'image' %}
-        background: url('{{ section.settings.section_bg_image |  image_url: '1200x500'}}');
-    {% endif %}
-}
-#shopify-section-{{ section.id }} ul{
-    display: flex;
-    gap: 10px;
-    list-style: none;
-    flex-wrap: wrap;
-}
-#shopify-section-{{ section.id }} ul li{
-    display: flex;
-    background: #005123;
-    gap: 20px;
-    padding: 30px;
-    border-radius: 20px;
-}
-#shopify-section-{{ section.id }} ul li image{
-    width: 30px;
-}
-#shopify-section-{{ section.id }} ul li p{
-    color: red;
-    font-size: 30px;
-    margin: 0;
-}
+ 
 
-    .container{
-        max-width: {{section.settings.container}};
-        margin: 0 auto;
-        padding: {{section.settings.padding_top}} px 20px  {{section.settings.padding_bottom}} px;
-        background: {{ section.settings.section_bg }}
-}
+{%  style  %} 
+ 
+#shopify-section-{{ section.id }}{ 
 
-    #shopify-section-{{ section.id }} h2{
-        font-size: {{ title_size }};
-        color: {{ title_color }};
+        {% if section.settings.select_bg == 'color' %}
+            background:{{ section.settings.section_bg }};
+        {%  elsif section.settings.select_bg == 'image' %}
+            background: url('{{ section.settings.section_bg_image |   img_url: '2000x' }}') ;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        {% endif %}
+        
+}
+ 
+#shopify-section-{{ section.id }} .container{
+        max-width:{{ section.settings.container }};
+        margin:0 auto;
+        padding: {{  section.settings.padding_top }}px 20px {{  section.settings.padding_bottom }}px;
     }
 
+  #shopify-section-{{ section.id }} h2{
+        font-size:{{ title_size }};
+        color:{{ title_color }};
+    }
+ 
+#shopify-section-{{ section.id }} ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    flex-wrap:wrap;
+}
+#shopify-section-{{ section.id }} ul li{
+    display:flex;
+    background:#000;
+    gap:10px;
+    padding:4px 12px;
+    border-radius:8px;
+    
+}
+#shopify-section-{{ section.id }} ul li img{
+    width:30px
+}
 
-{% endstyle %}
+#shopify-section-{{ section.id }} ul li  p{
+   color:#fff;
+   margin:0;
+}
 
-{%  schema  %}  
+{% endstyle %}  
+
+{% schema %}
 {
     "name": "Section",
     "class": "custom_section",
     "tag": "section",
     "disabled_on": {
-        "groups": ["header", "footer"]
+        "groups": ["header","footer"]
     },
     "blocks": [
         {
@@ -92,16 +102,17 @@
                     "type": "text",
                     "id": "title",
                     "label": "Title",
-                    "default": "lorem Ipsum dolor sit smet"
+                    "default":"De beste service voor jou en je fiets"
                 }
             ]
         }
     ],
     "settings": [
+         
         {
             "type": "select",
             "id": "container",
-            "default": "1200px",
+            "default":"1200px",
             "label": "Layout",
             "options": [
                 {
@@ -120,9 +131,10 @@
             "label": "Padding Top",
             "min": 0,
             "max": 200,
-            "step": 5,
-            "default": 50,
+            "step": 2,
+            "default": 20,
             "unit": "px"
+            
         },
         {
             "type": "range",
@@ -133,22 +145,23 @@
             "step": 5,
             "default": 50,
             "unit": "px"
+            
         },
         {
             "type": "select",
             "options": [
-                {"label": "Color", "value": "color"},
-                {"label": "Image", "value": "image"}
+                {"label": "Color","value": "color"},
+                {"label": "Image","value": "image"}
             ],
             "id": "select_bg",
-            "default": "color",
-            "label": "Select background"
+            "default":"color",
+            "label": "Select Background"
         },
         {
             "type": "color_background",
             "id": "section_bg",
-            "label": "Section background",
-            "default": "black",
+            "label": "Section Background",
+            "default":"white",
             "visible_if": "{{ section.settings.select_bg == 'color' }}"
         },
         {
@@ -161,32 +174,31 @@
             "type": "inline_richtext",
             "id": "title",
             "label": "Title",
-            "default": "This is Title"
+            "default":"This is Title"
         },
         {
             "type": "select",
             "id": "title_size",
             "label": "Title Size",
             "options": [
-                {"label": "Large", "value": "50px"},
-                {"label": "Medium", "value": "40px"},
-                {"label": "Small", "value": "30px"},
-                {"label": "Extra Small", "value": "24px"},
+                {"label": "Large","value": "50px"},
+                {"label": "Medium","value": "40px"},
+                {"label": "Small","value": "30px"},
+                {"label": "Extra Small","value": "20px"}
             ],
-            "default": "40px",
-            "visible_if": "{{ section.settings.title != blank}}"
+            "default":"40px",
+            "visible_if": "{{ section.settings.title != blank }}"
         },
         {
             "type": "color",
-            "default": "#000",
+            "default":"#000",
             "id": "title_color",
             "label": "Title Color",
-            "visible_if": "{{ section.settings.title != blank}}"
+            "visible_if": "{{ section.settings.title != blank }}"
         }
     ],
     "presets": [
         {"name": "Section"}
     ]
 }
-
 {% endschema %}
