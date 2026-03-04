@@ -5,8 +5,19 @@
  %}
 
  <div class="container">
-    {{ section.id }}
     <h2>{{ title }}</h2>
+
+
+
+<ul>
+    {% for block in section.blocks %}
+        <li>
+            <img src="{{ block.settings.icon |  img_url: '500x' }}" width="500px" height="auto" alt="{{ block.settings.icon.alt }}">
+            <p>{{ block.settings.title }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
  </div>
 
 <div class="container">
@@ -15,12 +26,33 @@
 
 {% style %}
 
-#shopify-section-{{ section.id }}{
+#shopify-section-{{ section.id }} .container {
     {%  if section.settings.select_bg == 'color' %}
         background: {{ section.settings.section_bg }};
     {%  elsif section.settings.section_bg == 'image' %}
         background: url('{{ section.settings.section_bg_image |  image_url: '1200x500'}}');
     {% endif %}
+}
+#shopify-section-{{ section.id }} ul{
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    flex-wrap: wrap;
+}
+#shopify-section-{{ section.id }} ul li{
+    display: flex;
+    background: #005123;
+    gap: 20px;
+    padding: 30px;
+    border-radius: 20px;
+}
+#shopify-section-{{ section.id }} ul li image{
+    width: 30px;
+}
+#shopify-section-{{ section.id }} ul li p{
+    color: red;
+    font-size: 30px;
+    margin: 0;
 }
 
     .container{
@@ -46,6 +78,25 @@
     "disabled_on": {
         "groups": ["header", "footer"]
     },
+    "blocks": [
+        {
+            "type": "icon",
+            "name": "Icon",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "lorem Ipsum dolor sit smet"
+                }
+            ]
+        }
+    ],
     "settings": [
         {
             "type": "select",
