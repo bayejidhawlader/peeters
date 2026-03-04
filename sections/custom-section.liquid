@@ -1,15 +1,39 @@
+{%  liquid 
+    assign title = section.settings.title
+    assign title_size = section.settings.title_size
+    assign title_color = section.settings.title_color
+ %}
+
+ <div class="container">
+    {{ section.id }}
+    <h2>{{ title }}</h2>
+ </div>
+
 <div class="container">
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus adipisci rem fuga aut ullam tempora exercitationem architecto deserunt dolore nesciunt.
 </div>
 
-
 {% style %}
+
+#shopify-section-{{ section.id }}{
+    {%  if section.settings.select_bg == 'color' %}
+        background: {{ section.settings.section_bg }};
+    {%  elsif section.settings.section_bg == 'image' %}
+        background: url('{{ section.settings.section_bg_image |  image_url: '1200x500'}}');
+    {% endif %}
+}
 
     .container{
         max-width: {{section.settings.container}};
         margin: 0 auto;
         padding: {{section.settings.padding_top}} px 20px  {{section.settings.padding_bottom}} px;
+        background: {{ section.settings.section_bg }}
 }
+
+    #shopify-section-{{ section.id }} h2{
+        font-size: {{ title_size }};
+        color: {{ title_color }};
+    }
 
 
 {% endstyle %}
@@ -60,9 +84,32 @@
             "unit": "px"
         },
         {
-            "type": "text",
+            "type": "select",
+            "options": [
+                {"label": "Color", "value": "color"},
+                {"label": "Image", "value": "image"}
+            ],
+            "id": "select_bg",
+            "default": "color",
+            "label": "Select background"
+        },
+        {
+            "type": "color_background",
+            "id": "section_bg",
+            "label": "Section background",
+            "default": "black",
+            "visible_if": "{{ section.settings.select_bg == 'color' }}"
+        },
+        {
+            "type": "image_picker",
+            "id": "section_bg_image",
+            "label": "Background Image",
+            "visible_if": "{{ section.settings.select_bg == 'image' }}"
+        },
+        {
+            "type": "inline_richtext",
             "id": "title",
-            "label": "title",
+            "label": "Title",
             "default": "This is Title"
         },
         {
@@ -75,13 +122,15 @@
                 {"label": "Small", "value": "30px"},
                 {"label": "Extra Small", "value": "24px"},
             ],
-            "default": "40px"
+            "default": "40px",
+            "visible_if": "{{ section.settings.title != blank}}"
         },
         {
             "type": "color",
             "default": "#000",
             "id": "title_color",
-            "label": "Title Color"
+            "label": "Title Color",
+            "visible_if": "{{ section.settings.title != blank}}"
         }
     ],
     "presets": [
