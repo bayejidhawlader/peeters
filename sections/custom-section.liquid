@@ -12,13 +12,45 @@
 
  
 {% if section.blocks.size > 0 %}
-<ul>
+<ul class="features">
 
     {% for block in section.blocks %}
-        <li>
-            <img src="{{ block.settings.icon | img_url: '500x' }}" width="100%" height="auto" alt="{{ block.settings.icon.alt }}">
-            <p>{{ block.settings.title }}</p>
-        </li>
+        {% liquid
+
+           assign icon = block.settings.icon
+           assign title = block.settings.title
+           assign aspect_ratio = block.settings.size
+           assign media_style = block.settings.style
+           assign radius = block.settings.radius
+
+        %}
+        {% case block.type %} 
+            {% when 'media' %}
+            <li>
+                {%  
+                    render 'media', 
+                    media: icon, 
+                    aspect_ratio: aspect_ratio,
+                    media_style: media_style
+                    radius: radius,
+                %}
+            </li>
+
+            {% when 'icon' %}
+
+             <li class="iconbox">
+                {% comment %} {% if  icon != blank %} {% endcomment %}
+                {% if icon %}
+                    <img src="{{ icon | img_url: '500x' }}" width="100%" height="auto" alt="{{ icon.alt }}">
+                {%  else %}
+                    {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+                {% if title != blank %}
+                    <p>{{ title }}</p>
+                {% endif %}
+            </li>
+        {% endcase %}
+        
     {% endfor %}
 
 </ul>
@@ -60,22 +92,28 @@
     gap:20px;
     list-style:none;
     flex-wrap:wrap;
+    align-items: center;
 }
-#shopify-section-{{ section.id }} ul li{
-    display:flex;
-    background:#000;
-    gap:10px;
-    padding:4px 12px;
-    border-radius:8px;
+#shopify-section-{{ section.id }} ul li.iconbox{
+    display: flex;
+    background: #000;
+    gap: 10px;
+    padding: 4px 12px;
+    border-radius: 8px;
     
 }
-#shopify-section-{{ section.id }} ul li img{
+#shopify-section-{{ section.id }} ul li.iconbox img{
     width:30px
 }
 
-#shopify-section-{{ section.id }} ul li  p{
-   color:#fff;
-   margin:0;
+#shopify-section-{{ section.id }} ul li.iconbox p{
+   color: #fff;
+   margin: 0;
+}
+
+.features li.iconbox svg{
+        width: 30px;
+        height: 30px;
 }
 
 {% endstyle %}  
@@ -89,6 +127,56 @@
         "groups": ["header","footer"]
     },
     "blocks": [
+        {
+            "type": "media",
+            "name": "media",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Image"
+                },
+                {
+                    "type": "header",
+                    "content": "Media Style"
+                },
+                {
+                    "type": "select",
+                    "id": "size",
+                    "label": "Media Size",
+                    "default": "auto",
+                    "options": [
+                        { "label": "Adapt the default size", "value": "auto"},
+                        { "label": "Portrait", "value": "2/3"},
+                        { "label": "Horizontal", "value": "3/2"},
+                        { "label": "Square", "value": "1/1"}
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "style",
+                    "label": "Media Style",
+                    "default": "none",
+                    "options": [
+                        {"label": "Cover", "value": "cover"},
+                        {"label": "Contain", "value": "Contain"},
+                        {"label": "Scale Down", "value": "scale-down"},
+                        {"label": "Fill", "value": "fill"},
+                        {"label": "Auto", "value": "none"},
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "radius",
+                    "label": "Radius",
+                    "min": 0,
+                    "max": 300,
+                    "step": 5,
+                    "unit": "px",
+                    "default": 10
+                }
+            ]
+        },
         {
             "type": "icon",
             "name": "Icon",
