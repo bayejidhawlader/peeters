@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
 
 {% liquid 
     assign title = section.settings.title
@@ -7,6 +8,7 @@
      
 %}
 
+ 
 
 <div class="container">
     
@@ -14,205 +16,198 @@
 
  
 {% if section.blocks.size > 0 %}
-    <!-- Swiper -->
+
     <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-        
-        
+    <div class="swiper-wrapper">
+         
 
     {% for block in section.blocks %}
-        {% liquid
+        {% liquid 
+            assign icon  = block.settings.icon
+            assign title = block.settings.title
+ 
 
-           assign icon = block.settings.icon
-           assign title = block.settings.title
+            assign product = block.settings.product 
+            assign price = product.price |  money_without_trailing_zeros
+            assign compare_at_price = product.compare_at_price |  money_without_trailing_zeros
+            assign save  =  product.compare_at_price | minus: product.price |  money_without_trailing_zeros 
+            assign media = product.featured_media 
 
-           assign product = block.settings.product
-           assign price = product.price | money_without_trailing_zeros
-           assign compare_at_price = product.compare_at_price |money_without_trailing_zeros
-           assign save = product.compare_at_price | minus: product.price | money_without_trailing_zeros
-           assign media = product.featured_media
-
+            assign products = block.settings.list
         %}
-        {{ block.id }}
-        {% case block.type %} 
-            {% when 'blockstyle' %}
-                {%  liquid 
-                        assign aspect_ratio = block.settings.size
-                        assign media_style = block.settings.style
-                        assign radius = block.settings.radius
-                %}
+ 
+        {%  case block.type %} 
 
-            {% when 'product' %}
-            <div class="swiper-slide">    
-
-                        {%  
+            {% when 'productlist' %}
+               
+                 {% for product  in products %}
+ 
+                        
+                    <div class="swiper-slide">   
+                        {% 
                             render 'media', 
-                            media: media, 
-                            aspect_ratio: aspect_ratio,
-                            media_style: media_style
-                            radius: radius,
+                            media: product.featured_media , 
+                            aspect_ratio : aspect_ratio , 
+                            media_style : media_style ,
+                            radius: radius
                         %}
-
+                        
                         <div class="price">
+
                             <span>{{ price }}</span>
                             <del>{{ compare_at_price }}</del>
 
-                            <span>
-                                save {{ save }}
+                            <span >
+                                 save {{ save  }}
                             </span>
+                            {% comment %} <span>{{ product.compare_at_price |  money_with_currency }}</span>
+                            <span>{{ product.compare_at_price |  money_without_currency }}</span>
+                            <span>{{ product.compare_at_price |  money_without_trailing_zeros }}</span> {% endcomment %}
                         </div>
-                        <h3><a href="{{ produt.url }}">{{ product.title | escape }}</a></h3>
-            </div>
+ 
+                        <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+                </div> 
+
+                 {% endfor  %}
+
+            {% when 'blockstyle' %}
+
+                {% liquid 
+                     assign aspect_ratio = block.settings.size
+                assign media_style = block.settings.style
+                assign radius = block.settings.radius
+                %}
+
+
+
+
+            {% when 'product' %}
+
+
+            <div class="swiper-slide">  
+                         
+
+                        {% 
+                            render 'media', 
+                            media: media, 
+                            aspect_ratio : aspect_ratio , 
+                            media_style : media_style ,
+                            radius: radius
+                        %}
+                        
+                        <div class="price">
+
+                            <span>{{ price }}</span>
+                            <del>{{ compare_at_price }}</del>
+
+                            <span >
+                                 save {{ save  }}
+                            </span>
+                            {% comment %} <span>{{ product.compare_at_price |  money_with_currency }}</span>
+                            <span>{{ product.compare_at_price |  money_without_currency }}</span>
+                            <span>{{ product.compare_at_price |  money_without_trailing_zeros }}</span> {% endcomment %}
+                        </div>
+ 
+                        <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+                </div> 
 
             {% when 'media' %}
-            <div class="swiper-slide">
-                {%  
-                    render 'media', 
-                    media: icon, 
-                    aspect_ratio: aspect_ratio,
-                    media_style: media_style
-                    radius: radius,
-                %}
-            </div>
+
+                <div class="swiper-slide">  
+                    {% 
+                        render 'media', 
+                        media: icon, 
+                        aspect_ratio : aspect_ratio , 
+                        media_style : media_style ,
+                        radius: radius
+                    %}
+                </div>
 
             {% when 'icon' %}
 
-            <div class="swiper-slide">
-                {% if icon %}
+                <div class="swiper-slide">  
+                {% comment %} {% if icon != blank%}  {% endcomment %}
+                {% if icon %} 
                     <img src="{{ icon | img_url: '500x' }}" width="100%" height="auto" alt="{{ icon.alt }}">
-                {%  else %}
-                    {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% else %}
+                    {{ 'blog-apparel-1' | placeholder_svg_tag: 'icon' }}
                 {% endif %}
                 {% if title != blank %}
                     <p>{{ title }}</p>
                 {% endif %}
-            </div>
+            </div> 
 
-            {% when "slider" %}
-                {% liquid
-                  assign autoplay = block.settings.autoplay
-                  assign speed = block.settings.speed
-                  assign pagination = block.settings.pagination
-                  assign navigation = block.settings.navigation
-                  assign slideperview = block.settings.slideperview
-                  assign slideperviewphone = block.settings.slideperviewphone 
+
+            {% when 'slider' %}
+                {% liquid 
+                    assign autoplay = block.settings.autoplay
+                    assign speed = block.settings.speed
+                    assign pagination = block.settings.pagination
+                    assign navigation = block.settings.navigation
+                    assign slideperview = block.settings.slideperview
+                    assign slideperviewphone = block.settings.slideperviewphone
+                        
                 %}
-        {% endcase %}
+
+        {% endcase %}  
+
+
+         
         
     {% endfor %}
-    </div>
-        {% if navigation == true %}
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        {% endif %}
-        {% if pagination == true %}
-        <div class="swiper-pagination"></div>
-        {% endif %}
-    </div>
+
+ </div>
+    {% if navigation == true %}
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    {% endif %}
+    {% if pagination == true %}
+    <div class="swiper-pagination"></div>
+    {% endif %}
+  </div>
 {% endif %}
 
 </div>
 
-<!-- Swiper JS -->
+
+    <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
   <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper(".mySwiper", {
-      slidesPerView: {{ slideperviewphone }},
+      slidesPerView: {{slideperviewphone |  default: 2 }},
       spaceBetween: 30,
       loop: true,
       {% if autoplay == true %}
-      speed: {{ speed }},
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
+        speed: {{speed}},
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
       {% endif %}
       {% if pagination == true %}
       pagination: {
         el: ".swiper-pagination",
         clickable: true,
-      },
+      }, 
       {% endif %}
       {% if navigation == true %}
       navigation: {
-        nextEl: "swiper-button-next",
-        prevEl: "swiper-button-prev",
-      },
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      } ,
       {% endif %}
 
-      breakpoints: {
+      breakpoints: { 
         1024: {
-          slidesPerView: {{ slideperview }},
+          slidesPerView: {{slideperview |  default: 5 }},
           spaceBetween: 50,
-        },
-      },
+        } 
+      } 
+
     });
   </script>
-
-
- 
-
-{%  style  %} 
- 
-#shopify-section-{{ section.id }}{ 
-
-        {% if section.settings.select_bg == 'color' %}
-            background:{{ section.settings.section_bg }};
-        {%  elsif section.settings.select_bg == 'image' %}
-            background: url('{{ section.settings.section_bg_image |   img_url: '2000x' }}') ;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-        {% endif %}
-        
-}
- 
-#shopify-section-{{ section.id }} .container{
-        max-width:{{ section.settings.container }};
-        margin:0 auto;
-        padding: {{  section.settings.padding_top }}px 20px {{  section.settings.padding_bottom }}px;
-    }
-
-  #shopify-section-{{ section.id }} h2{
-        font-size:{{ title_size }};
-        color:{{ title_color }};
-    }
- 
-#shopify-section-{{ section.id }} ul{
-    display:flex;
-    gap:20px;
-    list-style:none;
-    flex-wrap:wrap;
-    align-items: center;
-}
-#shopify-section-{{ section.id }} ul li.iconbox{
-    display: flex;
-    background: #000;
-    gap: 10px;
-    padding: 4px 12px;
-    border-radius: 8px;
-    
-}
-#shopify-section-{{ section.id }} .swiper-slide img{
-    width:100%;
-}
-
-#shopify-section-{{ section.id }} .swiper-slide p{
-   color: #fff;
-   margin: 0;
-}
-
-.features .swiper-slide svg{
-        width: 30px;
-        height: 30px;
-}
-.price{
-    display: flex;
-}
-
-{% endstyle %}  
 
 {% schema %}
 {
@@ -224,25 +219,37 @@
     },
     "blocks": [
         {
+            "type": "productlist",
+            "name":"Product List",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "product_list",
+                    "id": "list",
+                    "label": "Select Products"
+                }
+            ]
+        },
+        {
             "type": "product",
             "name": "product",
             "settings": [
                 {
                     "type": "product",
                     "id": "product",
-                    "label": "Select product"
+                    "label": "Select Product"
                 }
             ]
         },
         {
             "type": "media",
-            "name": "media",
+            "name":"media",
             "settings": [
                 {
                     "type": "image_picker",
                     "id": "icon",
                     "label": "Image"
-                }
+                }  
             ]
         },
         {
@@ -264,14 +271,15 @@
         },
         {
             "type": "slider",
-            "name": "slider",
+            "name":"slider",
             "limit": 1,
             "settings": [
                 {
                     "type": "checkbox",
                     "id": "autoplay",
-                    "label": "Auto Play Slider"
-                }, 
+                    "label": "Auto Play Slider",
+                    "default": true
+                },
                 {
                     "type": "range",
                     "id": "speed",
@@ -280,7 +288,7 @@
                     "max": 9000,
                     "step": 100,
                     "unit": "ms",
-                    "default": 5000,
+                    "default": 5000
                 },
                 {
                     "type": "checkbox",
@@ -300,8 +308,8 @@
                     "label": "Slide Per View",
                     "min": 1,
                     "max": 10,
-                    "step": 1,
-                    "default": 3,
+                    "step": 1, 
+                    "default": 3
                 },
                 {
                     "type": "range",
@@ -309,16 +317,18 @@
                     "label": "Slide Per View in Phone",
                     "min": 1,
                     "max": 5,
-                    "step": 1,
-                    "default": 1,
+                    "step": 1, 
+                    "default": 1
                 }
+                 
             ]
+
         },
         {
             "type": "blockstyle",
-            "name": "Block Style",
+            "name":"Block Style",
             "limit": 1,
-            "settings": [
+            "settings": [ 
                 {
                     "type": "header",
                     "content": "Media Style"
@@ -329,23 +339,23 @@
                     "label": "Media Size",
                     "default": "auto",
                     "options": [
-                        { "label": "Adapt the default size", "value": "auto"},
-                        { "label": "Portrait", "value": "2/3"},
-                        { "label": "Horizontal", "value": "3/2"},
-                        { "label": "Square", "value": "1/1"}
+                        {"label": "Adapt the default size","value": "auto"},
+                        {"label": "Portrait","value": "2/3"},
+                        {"label": "Horizontal","value": "3/2"},
+                        {"label": "Square","value": "1/1"}
                     ]
                 },
                 {
                     "type": "select",
                     "id": "style",
                     "label": "Media Style",
-                    "default": "none",
+                    "default":"none",
                     "options": [
-                        {"label": "Cover", "value": "cover"},
-                        {"label": "Contain", "value": "Contain"},
-                        {"label": "Scale Down", "value": "scale-down"},
-                        {"label": "Fill", "value": "fill"},
-                        {"label": "Auto", "value": "none"},
+                        {"label": "Cover","value": "cover"},
+                        {"label": "Contain","value": "contain"},
+                        {"label": "Scale Down","value": "scale-down"},
+                        {"label": "Fill","value": "fill"} ,
+                        {"label": "Auto","value": "none"} 
                     ]
                 },
                 {
@@ -356,7 +366,7 @@
                     "max": 300,
                     "step": 5,
                     "unit": "px",
-                    "default": 10
+                    "default": 10 
                 }
             ]
         }
@@ -456,3 +466,70 @@
     ]
 }
 {% endschema %}
+
+
+
+
+
+{%  style  %} 
+ 
+#shopify-section-{{ section.id }}{
+ 
+
+        {% if section.settings.select_bg == 'color' %}
+            background:{{ section.settings.section_bg }};
+        {%  elsif section.settings.select_bg == 'image' %}
+            background: url('{{ section.settings.section_bg_image |   img_url: '2000x' }}') ;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        {% endif %}
+        
+}
+ 
+
+#shopify-section-{{ section.id }} .container{
+        max-width:{{ section.settings.container }};
+        margin:0 auto;
+        padding: {{  section.settings.padding_top }}px 20px {{  section.settings.padding_bottom }}px;
+    }
+
+  #shopify-section-{{ section.id }} h2{
+        font-size:{{ title_size }};
+        color:{{ title_color }};
+    }
+ 
+#shopify-section-{{ section.id }} ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    flex-wrap:wrap;
+    align-items:center;
+}
+#shopify-section-{{ section.id }} ul li.iconBox{
+    display:flex;
+    background:#000;
+    gap:10px;
+    padding:4px 12px;
+    border-radius:8px;
+    
+}
+#shopify-section-{{ section.id }} .swiper-slide img{
+    width:100%;
+}
+
+#shopify-section-{{ section.id }} .swiper-slide  p{
+   color:#fff;
+   margin:0;
+}
+
+.features .swiper-slide .icon{
+    width:30px;
+    height:30px;
+}
+.price{
+    display:flex;
+
+}
+.price span{}
+{% endstyle %}  
