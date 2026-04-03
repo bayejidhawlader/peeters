@@ -9,6 +9,34 @@
  */
 {
   "sections": {
+    "hero_banner_V8WakL": {
+      "type": "hero-banner",
+      "blocks": {
+        "slide_U9BnAW": {
+          "type": "slide",
+          "settings": {
+            "media": "shopify://shop_images/Peeters_Tweewielers_sRGB-18_2.png"
+          }
+        }
+      },
+      "block_order": [
+        "slide_U9BnAW"
+      ],
+      "name": "Hero Banner",
+      "settings": {
+        "title": "Wij houden van fietsen",
+        "size": "large",
+        "content": "Ultiem fietsplezier door middel van optimale service, kwaliteit en vakmanschap. Dat staat bij ons voorop!",
+        "feature_01": "Plan een advies gesprek",
+        "feature_02": "Plan een service gesprekk",
+        "placeholder": "Waar ben je naar op zoek?",
+        "search_btn": "ZOEKEN",
+        "color_scheme": "",
+        "slider_width": "1200px",
+        "slider_radius": 80,
+        "slider_high": 0.4
+      }
+    },
     "hero_banner_dabpTm": {
       "type": "hero-banner",
       "blocks": {
@@ -255,6 +283,7 @@
     }
   },
   "order": [
+    "hero_banner_V8WakL",
     "hero_banner_dabpTm",
     "image_banner",
     "rich_text",
