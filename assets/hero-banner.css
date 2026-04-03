@@ -1,12 +1,15 @@
 .hero_banner{
     position: relative;
 }
+.hero_title{
+    max-width: var(--header_max_width);
+}
 .heroSliderLayout{}
 .slide{}
 .slide .slide_image{
-    width: 100%;
-    border-top-right-radius: var(--slider_radius);
-    border-bottom-right-radius: var(--slider_radius);
+    width: 100%; 
+    border-top-right-radius: var(--slide_radius);
+    border-bottom-right-radius: var(--slide_radius);
     aspect-ratio: 1/var(--slide_ratio);
     display: block;
     object-fit: cover;
@@ -14,18 +17,115 @@
 
 .hero-banner-content{
     position: absolute;
-    top: 0;
+    top:0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
 }
-.page-width .hero_content{
+.hero-banner-content .hero_content {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 100px 0 100px 0;
+    padding-top: 100px;
+    padding-bottom: 100px;
 }
 .page-width .hero_content .hero_title{}
 .page-width .hero_content .hero_search{}
+
+.hero_search{}
+.hero_search ul{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin-bottom: 16px;
+}
+.hero_search ul li{}
+.hero_search ul li div{
+    background-color: rgb(82 176 153);
+    display: flex;
+    align-items: center;
+    padding: 13px 22px;
+    border-radius: 100px;
+    gap: 8px;
+}
+.hero_search ul li div img{
+    width: 18px;
+    height: auto;
+}
+.hero_search ul li div span {
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 90%;
+    letter-spacing: 0%;
+    text-align: center;
+
+}
+.appoinment_btn{
+    background-color: rgb(82 176 153);
+    display: flex;
+    align-items: center;
+    padding: 13px 22px;
+    border-radius: 100px;
+    gap: 8px;
+}
+
+.appoinment_btn img{
+    width: 18px;
+    height: auto;
+}
+.appoinment_btn span {
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 90%;
+    letter-spacing: 0%;
+    text-align: center;
+
+}
+
+/*
+Hero Search Option
+*/
+.hero-banner-search{}
+    .hero-banner-search form{
+        display: flex;
+        background-color: #fff;
+        max-width: 1246px;
+        height: 100px;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 100px;
+        padding: 25px 35px;
+    }
+    .hero-banner-search form .searchIcon{
+        width: 50px;
+    }
+    .hero-banner-search form input{
+        font-weight: 600;
+        font-size: 25px;
+        line-height: 90%;
+        letter-spacing: 0%;
+        width: 100%;
+        border: none;
+        
+
+}
+.hero-banner-search form input::placeholder{
+        color: rgb(var(--color-background));;
+}
+.hero-banner-search form button{
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 90%;
+        letter-spacing: 10%;
+        padding: 17px 35px;
+        border-radius: 100px;
+        border: none;
+        flex-shrink: 0;
+        background: rgb(var(--color-background));
+        background: var(--gradient-background);
+        color: rgb(var(--color-foreground));
+}
