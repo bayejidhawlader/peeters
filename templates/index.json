@@ -12,6 +12,10 @@
     "hero_banner_dabpTm": {
       "type": "hero-banner",
       "blocks": {
+        "slide_q8jztC": {
+          "type": "slide",
+          "settings": {}
+        },
         "slide_cLnWYi": {
           "type": "slide",
           "settings": {
@@ -20,6 +24,7 @@
         }
       },
       "block_order": [
+        "slide_q8jztC",
         "slide_cLnWYi"
       ],
       "name": "Hero Banner",
