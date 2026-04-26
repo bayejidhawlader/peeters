@@ -78,7 +78,7 @@ function percentageSeen(element) {
   const elementHeight = element.offsetHeight;
 
   if (elementPositionY > scrollY + viewportHeight) {
-    // If we haven't reached the image yet
+    // If we haven't reached the image yet!
     return 0;
   } else if (elementPositionY + elementHeight < scrollY) {
     // If we've completely scrolled past the image
